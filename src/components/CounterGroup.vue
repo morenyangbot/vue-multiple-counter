@@ -17,7 +17,6 @@
 <script>
 import Counter from "./Counter";
 import CounterSum from "./CounterSum";
-import _ from "lodash";
 
 export default {
   name: "CounterGroup",
@@ -30,7 +29,7 @@ export default {
   },
   computed: {
     sum() {
-      return _.sum(this.counts.map(c => c.value));
+      return this.counts.map(i => i.value).reduce((a, b) => a + b, 0);
     }
   },
   methods: {
