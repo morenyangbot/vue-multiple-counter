@@ -1,10 +1,14 @@
 <template>
   <div>
-    <input type="number" v-model="counterNum" />
+    <div>
+      nums:
+      <input type="number" v-model="counterNum" @change="updateCounterNum" />
+    </div>
     <Counter
-      v-for="(i, index) in new Array(count)"
+      v-for="(count, index) in counts"
       :key="index"
-      @countUpdate="(e) => updateNum(index, e)"
+      :count="count.value"
+      @change="(val) => updateCount(index, val)"
     />
     <CounterSum :sum="sum" />
   </div>
@@ -20,32 +24,23 @@ export default {
   components: { Counter, CounterSum },
   data() {
     return {
-      counterNum: 2,
+      counterNum: 0,
       counts: []
     };
   },
   computed: {
-    count() {
-      return parseInt(this.counterNum);
-    },
     sum() {
-      return _.sum(this.counts);
+      return _.sum(this.counts.map(c => c.value));
     }
   },
   methods: {
-    updateNum(index, e) {
-      const _counts = [...this.counts];
-      _counts[index] = e;
-      this.counts = _counts;
-    }
-  },
-  watch: {
-    counterNum(val, oldVal) {
-      if (val > oldVal) {
-        this.counts.push(0);
-      } else {
-        this.counts.pop();
-      }
+    updateCounterNum(e) {
+      this.counts = new Array(parseInt(e.target.value))
+        .fill(0)
+        .map(i => ({ value: 0 }));
+    },
+    updateCount(index, num) {
+      this.counts[index].value = num;
     }
   }
 };

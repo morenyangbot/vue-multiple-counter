@@ -2,8 +2,8 @@
   <div>
     <h2>{{count}}</h2>
     <div>
-      <button @click="count++">点我+</button>
-      <button @click="count--">点我-</button>
+      <button @click="plus">点我+</button>
+      <button @click="minus">点我-</button>
     </div>
   </div>
 </template>
@@ -11,14 +11,23 @@
 <script>
 export default {
   name: "Counter",
-  data() {
-    return {
-      count: 0
-    };
+  model: {
+      prop: "count"
   },
-  watch: {
-    count(val) {
-      this.$emit("countUpdate", val);
+  props: {
+    count: {
+      default: 0
+    }
+  },
+  methods: {
+    plus() {
+      this.emitUpdate(this.count + 1);
+    },
+    minus() {
+      this.emitUpdate(this.count - 1);
+    },
+    emitUpdate(count) {
+      this.$emit("change", count);
     }
   }
 };

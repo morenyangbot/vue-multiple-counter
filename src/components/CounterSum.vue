@@ -1,5 +1,5 @@
 <template>
-  <h2>{{sum}}</h2>
+  <h2>Sum: {{sum}}</h2>
 </template>
 
 <script>
