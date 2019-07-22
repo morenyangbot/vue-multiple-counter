@@ -1,24 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <CounterGroup/>
+    {{title}}
+    <CounterGroup />
   </div>
 </template>
 
 <script>
-import CounterGroup from './components/CounterGroup.vue'
+import CounterGroup from "./components/CounterGroup.vue";
+import axios from "axios";
+
+const request = axios.create({
+  baseURL: "http://localhost:8090"
+});
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     CounterGroup
+  },
+  data() {
+    return {
+      title: ""
+    };
+  },
+  mounted() {
+    request.get("/title").then(res => {
+      this.title = res.data;
+    });
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

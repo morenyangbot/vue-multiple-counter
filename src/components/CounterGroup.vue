@@ -2,7 +2,7 @@
   <div>
     <div>
       nums:
-      <input type="number" v-model="counterNum" @change="updateCounterNum" />
+      <input type="number" :value="$store.state.counterNum" @change="updateCounterNum" />
     </div>
     <Counter
       v-for="(count, index) in counts"
@@ -34,12 +34,17 @@ export default {
   },
   methods: {
     updateCounterNum(e) {
-      this.counts = new Array(parseInt(e.target.value))
-        .fill(0)
-        .map(i => ({ value: 0 }));
+      this.$store.dispatch("updateCounterNum", parseInt(e.target.value));
     },
     updateCount(index, num) {
       this.counts[index].value = num;
+    }
+  },
+  watch: {
+    "$store.state.counterNum"(val) {
+      this.counts = new Array(parseInt(val))
+        .fill(0)
+        .map(() => ({ value: 0 }));
     }
   }
 };
