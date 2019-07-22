@@ -5,12 +5,12 @@
       <input type="number" :value="$store.state.counterNum" @change="updateCounterNum" />
     </div>
     <Counter
-      v-for="(count, index) in counts"
+      v-for="(count, index) in $store.state.list"
       :key="index"
       :count="count.value"
-      @change="(val) => updateCount(index, val)"
+      @change="(value) => $store.dispatch('updateList', {index, value})"
     />
-    <CounterSum :sum="sum" />
+    <CounterSum />
   </div>
 </template>
 
@@ -27,24 +27,9 @@ export default {
       counts: []
     };
   },
-  computed: {
-    sum() {
-      return this.counts.map(i => i.value).reduce((a, b) => a + b, 0);
-    }
-  },
   methods: {
     updateCounterNum(e) {
       this.$store.dispatch("updateCounterNum", parseInt(e.target.value));
-    },
-    updateCount(index, num) {
-      this.counts[index].value = num;
-    }
-  },
-  watch: {
-    "$store.state.counterNum"(val) {
-      this.counts = new Array(parseInt(val))
-        .fill(0)
-        .map(() => ({ value: 0 }));
     }
   }
 };
